@@ -1,0 +1,4 @@
+﻿apiVersion: v2
+name: clinicaltrial-ai
+version: 0.1.0
+description: Helm chart for ClinicalTrialAI (Phase-1 slice)

@@ -1,0 +1,7 @@
+﻿replicaCounts:
+  api: 1
+  agents: 1
+
+image:
+  repository: example/clinicaltrial-ai
+  tag: dev

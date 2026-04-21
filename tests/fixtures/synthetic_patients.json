@@ -1,0 +1,6 @@
+﻿{
+  "patients": [
+    {"patient_id": "P1", "age": 67},
+    {"patient_id": "P2", "age": 72}
+  ]
+}
