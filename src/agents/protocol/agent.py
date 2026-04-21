@@ -1,6 +1,7 @@
 ﻿from ..shared.messages import ProtocolSpec
 from ...graph.rag.retriever import PgVectorRetriever
 
+
 class ProtocolAgent:
     def __init__(self, retriever: PgVectorRetriever):
         self.retriever = retriever

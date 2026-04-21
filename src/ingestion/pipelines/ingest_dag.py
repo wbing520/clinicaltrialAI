@@ -58,8 +58,16 @@ def make_dag() -> DAG:
         doc_md=__doc__,
     ) as dag:
         fetch = PythonOperator(task_id="fetch_fhir", python_callable=task_fetch_fhir)
-        deid = PythonOperator(task_id="deidentify", python_callable=task_deidentify, op_kwargs={"bundle": fetch.output})
-        omop = PythonOperator(task_id="transform_omop", python_callable=task_transform_to_omop, op_kwargs={"bundle": deid.output})
+        deid = PythonOperator(
+            task_id="deidentify",
+            python_callable=task_deidentify,
+            op_kwargs={"bundle": fetch.output},
+        )
+        omop = PythonOperator(
+            task_id="transform_omop",
+            python_callable=task_transform_to_omop,
+            op_kwargs={"bundle": deid.output},
+        )
         load = PythonOperator(task_id="graph_load", python_callable=task_graph_load)
         fetch >> deid >> omop >> load
         return dag

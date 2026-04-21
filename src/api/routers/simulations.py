@@ -11,9 +11,10 @@ router = APIRouter(prefix="/simulate", tags=["simulate"])
 init_tracer("clinicaltrial-ai-api")
 tracer = get_tracer("api")
 
+
 @router.post("/", response_model=SimulationResult)
 async def simulate(spec: CohortSpec, _=Depends(require_role("INVESTIGATOR"))):
-    use_lg = os.getenv("USE_LANGGRAPH", "true").lower() in ("1","true","yes")
+    use_lg = os.getenv("USE_LANGGRAPH", "true").lower() in ("1", "true", "yes")
     with tracer.start_as_current_span("simulate_request") as span:
         sim_id = str(uuid4())
         span.set_attribute("simulation_id", sim_id)

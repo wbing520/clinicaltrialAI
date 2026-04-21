@@ -6,11 +6,12 @@ import os
 
 _initialized = False
 
+
 def init_tracer(service_name: str = "clinicaltrial-ai") -> None:
     global _initialized
     if _initialized:
         return
-    enable = os.getenv("OTEL_ENABLE", "true").lower() in ("1","true","yes")
+    enable = os.getenv("OTEL_ENABLE", "true").lower() in ("1", "true", "yes")
     if not enable:
         _initialized = True
         return
@@ -20,6 +21,7 @@ def init_tracer(service_name: str = "clinicaltrial-ai") -> None:
     provider.add_span_processor(processor)
     trace.set_tracer_provider(provider)
     _initialized = True
+
 
 def get_tracer(name: str = "clinicaltrial-ai"):
     return trace.get_tracer(name)

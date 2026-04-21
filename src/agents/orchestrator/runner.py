@@ -9,6 +9,7 @@ from ..judge.agent import JudgeAgent
 from ...graph.rag.retriever import PgVectorRetriever
 from ...security.audit_ledger.ledger import AuditLedger, AuditEvent
 
+
 class Orchestrator:
     def __init__(self, ledger: Optional[AuditLedger] = None):
         self.ledger = ledger or AuditLedger()
@@ -28,7 +29,11 @@ class Orchestrator:
         proto2 = self.adversary.perturb(proto)
         score = self.judge.score(proto2, cohort_size)
 
-        self.ledger.write(AuditEvent(simulation_id=sim_id, actor="judge", action="score", metadata={"score": score}))
+        self.ledger.write(
+            AuditEvent(
+                simulation_id=sim_id, actor="judge", action="score", metadata={"score": score}
+            )
+        )
         self.ledger.write(AuditEvent(simulation_id=sim_id, actor="orchestrator", action="end"))
 
         return SimulationResult(protocol=proto2, cohort_size=cohort_size, judge_score=score)

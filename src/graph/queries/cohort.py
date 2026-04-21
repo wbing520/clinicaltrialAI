@@ -3,11 +3,12 @@ from ...agents.shared.messages import CohortSpec
 
 # Simplified Cypher builders for the vertical slice
 
+
 def inclusion_cypher(spec: CohortSpec) -> str:
     parts: List[str] = [
         "MATCH (p:Patient)",
         "OPTIONAL MATCH (p)-[:HAS_CONDITION]->(c:Condition)",
-        "WITH p, collect(distinct c.snomed) as conds"
+        "WITH p, collect(distinct c.snomed) as conds",
     ]
     where_clauses: List[str] = []
     if spec.condition_snomed:
@@ -20,4 +21,3 @@ def inclusion_cypher(spec: CohortSpec) -> str:
         parts.append("WHERE " + " AND ".join(where_clauses))
     parts.append("RETURN p.patient_id as patient_id LIMIT 1000")
     return "\n".join(parts)
-

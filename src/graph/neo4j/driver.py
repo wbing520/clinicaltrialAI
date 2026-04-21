@@ -1,11 +1,14 @@
 ﻿import os
 from functools import lru_cache
 from neo4j import GraphDatabase, Driver
+
 try:
     from dotenv import load_dotenv  # type: ignore
+
     load_dotenv()
 except Exception:
     pass
+
 
 @lru_cache(maxsize=1)
 def get_driver() -> Driver:

@@ -1,5 +1,6 @@
 ﻿from src.security.audit_ledger.ledger import AuditLedger, AuditEvent
 
+
 def test_append_only_ledger(tmp_path):
     path = tmp_path / ".ledger"
     ledger = AuditLedger(str(path))

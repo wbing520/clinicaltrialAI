@@ -1,5 +1,6 @@
 ﻿from ..shared.messages import ProtocolSpec
 
+
 class JudgeAgent:
     def score(self, spec: ProtocolSpec, cohort_size: int) -> float:
         base = 0.5
