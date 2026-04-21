@@ -7,6 +7,24 @@ from src.agents.cohort.agent import CohortAgent
 from src.agents.shared.messages import CohortSpec
 from src.security.audit_ledger.ledger import AuditLedger, AuditEvent
 
+
+def _read_json_any_encoding(path: Path) -> Dict[str, Any]:
+    data = path.read_bytes()
+    # Detect common BOMs / encodings
+    if data.startswith(b"\xef\xbb\xbf"):
+        text = data.decode("utf-8-sig")
+    elif data.startswith(b"\xff\xfe") or data.startswith(b"\xfe\xff"):
+        # UTF-16 (LE/BE) — Python can infer endianness from BOM
+        text = data.decode("utf-16")
+    else:
+        try:
+            text = data.decode("utf-8")
+        except UnicodeDecodeError:
+            # Last resort
+            text = data.decode("utf-8", errors="ignore")
+    return json.loads(text)
+
+
 # This CLI simulates the vertical slice using stubbed data
 
 def main() -> None:
@@ -17,7 +35,7 @@ def main() -> None:
     # Load a tiny synthetic cohort spec fixture
     spec_path = Path("tests/fixtures/sample_protocol.json")
     if spec_path.exists():
-        payload: Dict[str, Any] = json.loads(spec_path.read_text(encoding="utf-8"))
+        payload: Dict[str, Any] = _read_json_any_encoding(spec_path)
     else:
         payload = {"condition_snomed": ["44054006"], "min_age": 50, "max_age": 85}
 

@@ -1,5 +1,5 @@
 ﻿from typing import List
-from ..shared.messages import CohortSpec
+from ...agents.shared.messages import CohortSpec
 
 # Simplified Cypher builders for the vertical slice
 
@@ -20,3 +20,4 @@ def inclusion_cypher(spec: CohortSpec) -> str:
         parts.append("WHERE " + " AND ".join(where_clauses))
     parts.append("RETURN p.patient_id as patient_id LIMIT 1000")
     return "\n".join(parts)
+

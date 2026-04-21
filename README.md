@@ -77,6 +77,8 @@ See `docs/PLAN.md` and `docs/DESIGN.md` for full rationale and architecture.
 - `python scripts/run_simulation.py`
 - Audit entries append to `.audit_ledger.log`.
 
+![alt text](image.png)
+
 7) Run tests
 - `pytest -q`
 - Format/lint: `black src tests` and `ruff .`

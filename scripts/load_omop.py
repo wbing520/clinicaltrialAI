@@ -10,9 +10,20 @@ MERGE (p:Patient {patient_id: row.patient_id})
 SET p.age = row.age
 """
 
+def _read_json_any_encoding(path: Path):
+    data = path.read_bytes()
+    if data.startswith(b"\xef\xbb\xbf"):
+        text = data.decode("utf-8-sig")
+    elif data.startswith(b"\xff\xfe") or data.startswith(b"\xfe\xff"):
+        text = data.decode("utf-16")
+    else:
+        text = data.decode("utf-8", errors="ignore")
+    return json.loads(text)
+
+
 def load_synthetic_patients(path: str, driver: Driver | None = None) -> int:
     fp = Path(path)
-    data = json.loads(fp.read_text(encoding="utf-8"))
+    data = _read_json_any_encoding(fp)
     rows: List[dict] = data.get("patients", [])
     drv = driver or get_driver()
     with drv.session() as s:
