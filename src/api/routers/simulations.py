@@ -6,6 +6,9 @@ router = APIRouter(prefix="/simulate", tags=["simulate"])
 
 @router.post("/", response_model=SimulationResult)
 async def simulate(spec: CohortSpec, _=Depends(require_role("INVESTIGATOR"))):
-    # Stubbed response for Phase-1 slice before full orchestration
+    from ...agents.orchestrator.runner import Orchestrator
+    orch = Orchestrator()
+    return orch.run(spec)
     protocol = ProtocolSpec(title="Stub Trial", primary_endpoint="All-cause hospitalization at 180 days")
     return SimulationResult(protocol=protocol, cohort_size=42, judge_score=0.65)
+
